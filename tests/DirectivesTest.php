@@ -19,7 +19,7 @@ class DirectivesTest extends TestCase
             ->withoutCss()
             ->withoutJs();
 
-        $this->compiler = Mockery::mock(CompilerInterface::class);
+        $this->compiler = Mockery::mock(BladeCompiler::class);
     }
 
 

@@ -7,7 +7,6 @@ use Illuminate\Contracts\View\View as ViewInterface;
 use Illuminate\Events\Dispatcher;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\View\Compilers\BladeCompiler;
-use Illuminate\View\Compilers\CompilerInterface;
 use Illuminate\View\Engines\CompilerEngine;
 use Illuminate\View\Engines\EngineResolver;
 use Illuminate\View\Factory;
@@ -34,6 +33,11 @@ class BladeInstance implements BladeInterface
      * @var DirectivesInterface $directives The custom directives to apply to this instance.
      */
     private $directives;
+
+    /**
+     * @var ?BladeCompiler The internal cache of the compiler.
+     */
+    private $compiler;
 
     /**
      * @var ?Factory $factory The internal cache of the Factory to only instantiate it once.
@@ -98,15 +102,7 @@ class BladeInstance implements BladeInterface
 
         $resolver = new EngineResolver;
         $resolver->register("blade", function () {
-            if (!is_dir($this->cache)) {
-                mkdir($this->cache, 0777, true);
-            }
-
-            $blade = new BladeCompiler(new Filesystem, $this->cache);
-
-            $this->directives->register($blade);
-
-            return new CompilerEngine($blade);
+            return new CompilerEngine($this->getCompiler());
         });
 
         $this->factory = new Factory($resolver, $this->getViewFinder(), new Dispatcher);
@@ -118,15 +114,23 @@ class BladeInstance implements BladeInterface
     /**
      * Get the internal compiler in use.
      *
-     * @return CompilerInterface
+     * @return BladeCompiler
      */
-    private function getCompiler(): CompilerInterface
+    private function getCompiler(): BladeCompiler
     {
-        return $this
-            ->getViewFactory()
-            ->getEngineResolver()
-            ->resolve("blade")
-            ->getCompiler();
+        if ($this->compiler) {
+            return $this->compiler;
+        }
+
+        if (!is_dir($this->cache)) {
+            mkdir($this->cache, 0777, true);
+        }
+
+        $this->compiler = new BladeCompiler(new Filesystem(), $this->cache);
+
+        $this->directives->register($this->compiler);
+
+        return $this->compiler;
     }
 
 
