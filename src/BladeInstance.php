@@ -68,7 +68,7 @@ class BladeInstance implements BladeInterface
         $this->cache = $cache;
 
         if ($directives === null) {
-            $directives = new Directives;
+            $directives = new Directives();
         }
         $this->directives = $directives;
     }
@@ -82,7 +82,7 @@ class BladeInstance implements BladeInterface
     private function getViewFinder(): FileViewFinder
     {
         if (!$this->finder) {
-            $this->finder = new FileViewFinder(new Filesystem, [$this->path]);
+            $this->finder = new FileViewFinder(new Filesystem(), [$this->path]);
         }
 
         return $this->finder;
@@ -100,12 +100,12 @@ class BladeInstance implements BladeInterface
             return $this->factory;
         }
 
-        $resolver = new EngineResolver;
+        $resolver = new EngineResolver();
         $resolver->register("blade", function () {
             return new CompilerEngine($this->getCompiler());
         });
 
-        $this->factory = new Factory($resolver, $this->getViewFinder(), new Dispatcher);
+        $this->factory = new Factory($resolver, $this->getViewFinder(), new Dispatcher());
 
         return $this->factory;
     }
@@ -180,7 +180,7 @@ class BladeInstance implements BladeInterface
     public function if(string $name, callable $handler): BladeInterface
     {
         if (!$this->conditionHandler) {
-            $this->conditionHandler = new ConditionHandler;
+            $this->conditionHandler = new ConditionHandler();
             $this->share("_condition_handler", $this->conditionHandler);
         }
 
