@@ -3,13 +3,18 @@
 namespace duncan3dc\LaravelTests;
 
 use duncan3dc\Laravel\Directives;
-use Illuminate\View\Compilers\CompilerInterface;
+use duncan3dc\Laravel\DirectivesInterface;
+use Illuminate\View\Compilers\BladeCompiler;
 use Mockery;
 use PHPUnit\Framework\TestCase;
 
 class DirectivesTest extends TestCase
 {
+    /** @var DirectivesInterface */
     private $directives;
+
+    /** @var BladeCompiler */
+    private $compiler;
 
     public function setUp()
     {
