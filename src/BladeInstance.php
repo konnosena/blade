@@ -36,17 +36,17 @@ class BladeInstance implements BladeInterface
     private $directives;
 
     /**
-     * @var Factory $factory The internal cache of the Factory to only instantiate it once.
+     * @var ?Factory $factory The internal cache of the Factory to only instantiate it once.
      */
     private $factory;
 
     /**
-     * @var FileViewFinder $finder The internal cache of the FileViewFinder to only instantiate it once.
+     * @var ?FileViewFinder $finder The internal cache of the FileViewFinder to only instantiate it once.
      */
     private $finder;
 
     /**
-     * @var ConditionHandler $conditionHandler The custom conditionals that have been registered.
+     * @var ?ConditionHandler $conditionHandler The custom conditionals that have been registered.
      */
     private $conditionHandler;
 
@@ -56,6 +56,7 @@ class BladeInstance implements BladeInterface
      *
      * @param string $path The default path for views
      * @param string $cache The default path for cached php
+     * @param DirectivesInterface $directives
      */
     public function __construct(string $path, string $cache, DirectivesInterface $directives = null)
     {

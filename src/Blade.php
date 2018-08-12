@@ -12,7 +12,7 @@ use function realpath;
 class Blade
 {
     /**
-     * @var BladeInstance $instance The internal cache of the BladeInstance to only instantiate it once
+     * @var ?BladeInstance $instance The internal cache of the BladeInstance to only instantiate it once
      */
     private static $instance;
 
