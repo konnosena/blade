@@ -40,6 +40,9 @@ class Blade
         if (!static::$instance) {
             # Calculate the parent of the vendor directory
             $path = realpath(__DIR__ . "/../../../..");
+            if (!$path) {
+                throw new \RuntimeException("Unable to locate the parent of the vendor directory");
+            }
             if (!is_dir($path)) {
                 throw new \RuntimeException("Unable to locate the root directory: {$path}");
             }
