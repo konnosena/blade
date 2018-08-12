@@ -32,5 +32,13 @@
     "autoload-dev": {
         "psr-4": {"duncan3dc\\LaravelTests\\": "tests/"},
         "files": ["tests/functions.php"]
+    },
+    "scripts": {
+        "test": [
+            "vendor/bin/phpunit",
+            "vendor/bin/composer-require-checker",
+            "vendor/bin/phpstan analyse --level=max src",
+            "vendor/bin/phpcs"
+        ]
     }
 }
