@@ -1,5 +1,4 @@
 <?php
-
 namespace duncan3dc\Laravel;
 
 use Illuminate\View\Compilers\CompilerInterface;
